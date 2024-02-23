@@ -8,10 +8,12 @@ import com.echo.utils.MyKafkaUtil;
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
 import com.ververica.cdc.connectors.mysql.table.StartupOptions;
 import com.ververica.cdc.debezium.JsonDebeziumDeserializationSchema;
+import com.ververica.cdc.debezium.StringDebeziumDeserializationSchema;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.state.MapStateDescriptor;
+import org.apache.flink.api.common.time.Time;
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.BroadcastConnectedStream;
@@ -21,8 +23,12 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
+import java.lang.module.Configuration;
+import java.util.Properties;
+
 
 public class DimApp {
+
 
     public static void main(String[] args) throws Exception {
         //TODO 1,获取执行环境
@@ -44,6 +50,7 @@ public class DimApp {
         DataStreamSource<String> kafkaDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupId));
 
         //TODO 3，过滤非JSON数据以及保留新增，变化以及初始化数据为json
+//        kafkaDS.flatMap()
         SingleOutputStreamOperator<JSONObject> filterJsonObjectDS = kafkaDS.flatMap(new FlatMapFunction<String, JSONObject>() {
             @Override
             public void flatMap(String s, Collector<JSONObject> collector) throws Exception {
@@ -62,25 +69,36 @@ public class DimApp {
 
             }
         });
+        System.out.println("hahaha");
+        Properties prop = new Properties();
+        prop.setProperty("useSSL","false");
         //TODO 4，使用flinkCDC 读取mysql配置信息表创建配置流
-        MySqlSource<String> sqlSource = MySqlSource.<String>builder()
+        MySqlSource<String> mySqlSource = MySqlSource.<String>builder()
                 .hostname("192.168.10.102")
                 .port(3306)
                 .username("root")
                 .password("Estim@b509")
-                .databaseList("gmall-config")
-                .tableList("gmall-config.table_process")
-                .scanNewlyAddedTableEnabled(true) // 开启支持新增表
-                .deserializer(new JsonDebeziumDeserializationSchema())
+                .databaseList("gmail-config")
+                .tableList("gmail-config.table_process")
+//                .serverTimeZone("UTC")
                 .startupOptions(StartupOptions.initial())
+                .deserializer(new JsonDebeziumDeserializationSchema())
+                .jdbcProperties(prop)
                 .build();
-        DataStreamSource<String> streamSource = environment.fromSource(sqlSource, WatermarkStrategy.noWatermarks(), "MySQL Source");
+
+
+        DataStreamSource<String> streamSource = environment.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQLSource");
+//        streamSource.print();
+//        environment.execute();
+
+
+
         //TODO 5，将配置流处理为广播流
         MapStateDescriptor<String, TableProcess> mapStateDescriptor = new MapStateDescriptor<String, TableProcess>("map-state",String.class, TableProcess.class);
         BroadcastStream<String> broadcastStream = streamSource.broadcast(mapStateDescriptor);
         //TODO 6，连接主流与广播流
         BroadcastConnectedStream<JSONObject, String> connectedStream = filterJsonObjectDS.connect(broadcastStream);
-        
+
         //TODO 7，处理连接流，根据配置信息处理主流数据
         SingleOutputStreamOperator<JSONObject> dimDs = connectedStream.process(new TableProcessFunction(mapStateDescriptor));
         //TODO 8，将数据写出到Phoenix
