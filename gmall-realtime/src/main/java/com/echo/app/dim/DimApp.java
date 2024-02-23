@@ -21,6 +21,7 @@ import org.apache.flink.streaming.api.datastream.BroadcastStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumerBase;
 import org.apache.flink.util.Collector;
 
 import java.lang.module.Configuration;
@@ -48,28 +49,25 @@ public class DimApp {
         String topic = "topic_db";
         String groupId = "Dim_App_211126";
         DataStreamSource<String> kafkaDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupId));
+//        environment.addSource(FlinkKafkaConsumerBase)
 
         //TODO 3，过滤非JSON数据以及保留新增，变化以及初始化数据为json
 //        kafkaDS.flatMap()
-        SingleOutputStreamOperator<JSONObject> filterJsonObjectDS = kafkaDS.flatMap(new FlatMapFunction<String, JSONObject>() {
-            @Override
-            public void flatMap(String s, Collector<JSONObject> collector) throws Exception {
-                try {
-                    //将数据转为json
-                    JSONObject jsonObject = JSON.parseObject(s);
-                    String type = jsonObject.getString("type");
-                    //保留新增,变化，以及初始化数据
-                    if ("insert".equals(type) || "update".equals(type) || "bootstrap-insert".equals(type)) {
-                        collector.collect(jsonObject);
-                    }
-
-                } catch (Exception e) {
-                    System.out.println("发现脏数据" + s);
+        SingleOutputStreamOperator<JSONObject> filterJsonObjectDS = kafkaDS.flatMap((FlatMapFunction<String, JSONObject>) (s, collector) -> {
+            try {
+                //将数据转为json
+                JSONObject jsonObject = JSON.parseObject(s);
+                String type = jsonObject.getString("type");
+                //保留新增,变化，以及初始化数据
+                if ("insert".equals(type) || "update".equals(type) || "bootstrap-insert".equals(type)) {
+                    collector.collect(jsonObject);
                 }
 
+            } catch (Exception e) {
+                System.out.println("发现脏数据" + s);
             }
+
         });
-        System.out.println("hahaha");
         Properties prop = new Properties();
         prop.setProperty("useSSL","false");
         //TODO 4，使用flinkCDC 读取mysql配置信息表创建配置流
@@ -80,7 +78,6 @@ public class DimApp {
                 .password("Estim@b509")
                 .databaseList("gmail-config")
                 .tableList("gmail-config.table_process")
-//                .serverTimeZone("UTC")
                 .startupOptions(StartupOptions.initial())
                 .deserializer(new JsonDebeziumDeserializationSchema())
                 .jdbcProperties(prop)
@@ -88,13 +85,9 @@ public class DimApp {
 
 
         DataStreamSource<String> streamSource = environment.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQLSource");
-//        streamSource.print();
-//        environment.execute();
-
-
 
         //TODO 5，将配置流处理为广播流
-        MapStateDescriptor<String, TableProcess> mapStateDescriptor = new MapStateDescriptor<String, TableProcess>("map-state",String.class, TableProcess.class);
+        MapStateDescriptor<String, TableProcess> mapStateDescriptor = new MapStateDescriptor<>("map-state", String.class, TableProcess.class);
         BroadcastStream<String> broadcastStream = streamSource.broadcast(mapStateDescriptor);
         //TODO 6，连接主流与广播流
         BroadcastConnectedStream<JSONObject, String> connectedStream = filterJsonObjectDS.connect(broadcastStream);

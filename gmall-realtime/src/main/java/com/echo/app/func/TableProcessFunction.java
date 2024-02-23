@@ -31,7 +31,16 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
 
     @Override
     public void open(Configuration parameters) throws Exception {
-        connection = DriverManager.getConnection(GmallConfig.PHOENIX_SERVER);
+        //初始化 Phoenix 的连接
+        try {
+            Class.forName(GmallConfig.PHOENIX_DRIVER);
+            connection = DriverManager.getConnection(GmallConfig.PHOENIX_SERVER);
+            connection.setSchema(GmallConfig.HBASE_SCHEMA);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("连接phoenix失败 -> " + e.getMessage());
+        }
+
     }
 
 
