@@ -67,7 +67,7 @@ public class DimApp {
                 .hostname("192.168.10.102")
                 .port(3306)
                 .username("root")
-                .password("000000")
+                .password("Estim@b509")
                 .databaseList("gmall-config")
                 .tableList("gmall-config.table_process")
                 .scanNewlyAddedTableEnabled(true) // 开启支持新增表
