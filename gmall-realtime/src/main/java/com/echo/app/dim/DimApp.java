@@ -58,6 +58,7 @@ public class DimApp {
                     //将数据转为json
                     JSONObject jsonObject = JSON.parseObject(s);
                     String type = jsonObject.getString("type");
+                    System.out.println(type);
                     //保留新增,变化，以及初始化数据
                     if ("insert".equals(type) || "update".equals(type) || "bootstrap-insert".equals(type)) {
                         collector.collect(jsonObject);
@@ -69,7 +70,6 @@ public class DimApp {
 
             }
         });
-        System.out.println("hahaha");
         Properties prop = new Properties();
         prop.setProperty("useSSL","false");
         //TODO 4，使用flinkCDC 读取mysql配置信息表创建配置流
@@ -80,16 +80,24 @@ public class DimApp {
                 .password("Estim@b509")
                 .databaseList("gmail-config")
                 .tableList("gmail-config.table_process")
+//                .databaseList("gmall")
+//                .tableList("gmall.base_region")
+//                .hostname("192.168.1.133")
+//                .port(3306)
+//                .username("root")
+//                .password("Estim@b509")
+//                .databaseList("cdc_test")
+//                .tableList("cdc_test.user_info")
 //                .serverTimeZone("UTC")
                 .startupOptions(StartupOptions.initial())
                 .deserializer(new JsonDebeziumDeserializationSchema())
                 .jdbcProperties(prop)
                 .build();
 
-
+//
         DataStreamSource<String> streamSource = environment.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQLSource");
-//        streamSource.print();
-//        environment.execute();
+        streamSource.print();
+        environment.execute();
 
 
 

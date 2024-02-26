@@ -4,7 +4,7 @@
 <configuration>
     <property>
         <name>hbase.rootdir</name>
-        <value>hdfs://hadoop102:8020/HBase</value>
+        <value>hdfs://hadoop102:8020/hbase</value>
     </property>
 
     <property>
@@ -26,6 +26,11 @@
         <name>hbase.wal.provider</name>
         <value>filesystem</value>
     </property>
+<!--    &lt;!&ndash; 开启phoenix事务支持 &ndash;&gt;-->
+<!--    <property>-->
+<!--        <name>phoenix.transactions.enabled</name>-->
+<!--        <value>true</value>-->
+<!--    </property>-->
 
     <!-- 注意：为了开启hbase的namespace和phoenix的schema的映射，在程序中需要加这个配置文件，另外在linux服务上，也需要在hbase以及phoenix的hbase-site.xml配置文件中，加上以上两个配置，并使用xsync进行同步（本节1中文档已有说明）。-->
     <property>

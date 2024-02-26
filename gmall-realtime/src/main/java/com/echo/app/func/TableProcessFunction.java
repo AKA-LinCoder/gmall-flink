@@ -30,15 +30,27 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
 
 
     @Override
-    public void open(Configuration parameters) throws Exception {
-        connection = DriverManager.getConnection(GmallConfig.PHOENIX_SERVER);
+    public void open(Configuration parameters)  {
+        //初始化 Phoenix 的连接
+        try {
+            Class.forName(GmallConfig.PHOENIX_DRIVER);
+            connection = DriverManager.getConnection(GmallConfig.PHOENIX_SERVER);
+        }catch (Exception e){
+            throw new RuntimeException("连接phoenix失败 -> " + e.getMessage());
+        }
     }
 
 
-
-
+    /***
+     * 处理广播流数据
+     * @param s
+     * @param context
+     * @param collector
+     * @throws Exception
+     */
     @Override
     public void processBroadcastElement(String s, BroadcastProcessFunction<JSONObject, String, JSONObject>.Context context, Collector<JSONObject> collector) throws Exception {
+        System.out.println("我要处理广播流了");
         //处理广播流
         //1 获取并解析数据，方便主流操作
         JSONObject jsonObject = JSON.parseObject(s);
@@ -101,7 +113,7 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
          preparedStatement.execute();
 
      }catch (SQLException sqlException){
-         throw new  RuntimeException("建表失败" + sinkTable);
+         throw new  RuntimeException("建表失败" + sinkTable+sqlException.getMessage());
      } finally {
 
          //释放资源
@@ -119,6 +131,13 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
 
     }
 
+    /***
+     * 主流数据处理
+     * @param jsonObject
+     * @param readOnlyContext
+     * @param collector
+     * @throws Exception
+     */
     @Override
     public void processElement(JSONObject jsonObject, BroadcastProcessFunction<JSONObject, String, JSONObject>.ReadOnlyContext readOnlyContext, Collector<JSONObject> collector) throws Exception {
         //处理主流数据
