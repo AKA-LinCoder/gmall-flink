@@ -31,6 +31,7 @@ public class MyKafkaUtil {
 
             @Override
             public String deserialize(ConsumerRecord<byte[], byte[]> consumerRecord) throws Exception {
+                System.out.println(consumerRecord.value());
                 if(consumerRecord==null || consumerRecord.value() == null){
                     return null;
                 }else {

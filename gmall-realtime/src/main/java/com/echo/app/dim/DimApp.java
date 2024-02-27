@@ -8,12 +8,10 @@ import com.echo.utils.MyKafkaUtil;
 import com.ververica.cdc.connectors.mysql.source.MySqlSource;
 import com.ververica.cdc.connectors.mysql.table.StartupOptions;
 import com.ververica.cdc.debezium.JsonDebeziumDeserializationSchema;
-import com.ververica.cdc.debezium.StringDebeziumDeserializationSchema;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
 import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.state.MapStateDescriptor;
-import org.apache.flink.api.common.time.Time;
 import org.apache.flink.runtime.state.hashmap.HashMapStateBackend;
 import org.apache.flink.streaming.api.CheckpointingMode;
 import org.apache.flink.streaming.api.datastream.BroadcastConnectedStream;
@@ -23,21 +21,20 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
-import java.lang.module.Configuration;
 import java.util.Properties;
 
 
 public class DimApp {
-
 
     public static void main(String[] args) throws Exception {
         //TODO 1,获取执行环境
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);//生产环境设置为Kafka主题的分区数量
         //1.1开启checkPoint,5分钟一次
-        environment.enableCheckpointing(5*60000L, CheckpointingMode.EXACTLY_ONCE);
+        environment.enableCheckpointing(1000, CheckpointingMode.EXACTLY_ONCE);
         environment.getCheckpointConfig().setCheckpointTimeout(10*60000L);
         environment.getCheckpointConfig().setMaxConcurrentCheckpoints(2);
+//        environment.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION);
         environment.setRestartStrategy(RestartStrategies.fixedDelayRestart(3,5000L));
         //1.2设置状态后端
         environment.setStateBackend(new HashMapStateBackend());
@@ -80,26 +77,13 @@ public class DimApp {
                 .password("Estim@b509")
                 .databaseList("gmail-config")
                 .tableList("gmail-config.table_process")
-//                .databaseList("gmall")
-//                .tableList("gmall.base_region")
-//                .hostname("192.168.1.133")
-//                .port(3306)
-//                .username("root")
-//                .password("Estim@b509")
-//                .databaseList("cdc_test")
-//                .tableList("cdc_test.user_info")
-//                .serverTimeZone("UTC")
                 .startupOptions(StartupOptions.initial())
                 .deserializer(new JsonDebeziumDeserializationSchema())
-                .jdbcProperties(prop)
+                .jdbcProperties(prop) // 不加这个会出现连接不上的问题ssl加密问题
                 .build();
 
-//
         DataStreamSource<String> streamSource = environment.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQLSource");
-        streamSource.print();
-        environment.execute();
-
-
+//        streamSource.print();
 
         //TODO 5，将配置流处理为广播流
         MapStateDescriptor<String, TableProcess> mapStateDescriptor = new MapStateDescriptor<String, TableProcess>("map-state",String.class, TableProcess.class);
@@ -111,7 +95,7 @@ public class DimApp {
         SingleOutputStreamOperator<JSONObject> dimDs = connectedStream.process(new TableProcessFunction(mapStateDescriptor));
         //TODO 8，将数据写出到Phoenix
         dimDs.print(">>>>>>>>");
-        //TODO 9 启动任务
+//        //TODO 9 启动任务
         environment.execute("dimApp");
     }
 }

@@ -33,6 +33,7 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
     public void open(Configuration parameters)  {
         //初始化 Phoenix 的连接
         try {
+            System.out.println("初始化phoenix连接中");
             Class.forName(GmallConfig.PHOENIX_DRIVER);
             connection = DriverManager.getConnection(GmallConfig.PHOENIX_SERVER);
         }catch (Exception e){
@@ -140,6 +141,7 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
      */
     @Override
     public void processElement(JSONObject jsonObject, BroadcastProcessFunction<JSONObject, String, JSONObject>.ReadOnlyContext readOnlyContext, Collector<JSONObject> collector) throws Exception {
+        System.out.println("我是主流");
         //处理主流数据
         //1 获取广播的配置数据
         ReadOnlyBroadcastState<String, TableProcess> broadcastState = readOnlyContext.getBroadcastState(mapStateDescriptor);
