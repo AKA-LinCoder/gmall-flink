@@ -106,6 +106,7 @@ public class DimApp {
         SingleOutputStreamOperator<JSONObject> dimDs = connectedStream.process(new TableProcessFunction(mapStateDescriptor));
         //TODO 8，将数据写出到Phoenix
         dimDs.print(">>>>>>>>");
+        //不使用jdbcSink的原因：jdbcSink必须写好sql
         dimDs.addSink(new DimSinkFunction());
 //        //TODO 9 启动任务
         environment.execute("dimApp");
