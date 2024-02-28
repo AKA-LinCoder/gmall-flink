@@ -26,6 +26,7 @@ import java.util.Properties;
 
 public class DimApp {
 
+    //hadoop,zookeeper,kafka,maxwell,HBase,flume
     public static void main(String[] args) throws Exception {
         //TODO 1,获取执行环境
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
@@ -34,7 +35,6 @@ public class DimApp {
         environment.enableCheckpointing(1000, CheckpointingMode.EXACTLY_ONCE);
         environment.getCheckpointConfig().setCheckpointTimeout(10*60000L);
         environment.getCheckpointConfig().setMaxConcurrentCheckpoints(2);
-//        environment.getCheckpointConfig().enableExternalizedCheckpoints(CheckpointConfig.ExternalizedCheckpointCleanup.DELETE_ON_CANCELLATION);
         environment.setRestartStrategy(RestartStrategies.fixedDelayRestart(3,5000L));
         //1.2设置状态后端
         environment.setStateBackend(new HashMapStateBackend());
@@ -45,9 +45,9 @@ public class DimApp {
         String topic = "topic_db";
         String groupId = "Dim_App_211126";
         DataStreamSource<String> kafkaDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupId));
+//        DataStreamSource<String> kafkaDS = environment.fromSource(MyKafkaUtil.getFlinkKafkaSource(topic,groupId),WatermarkStrategy.noWatermarks(),"MySQLSource");
 
-        //TODO 3，过滤非JSON数据以及保留新增，变化以及初始化数据为json
-//        kafkaDS.flatMap()
+        //TODO 3，过滤非JSON数据以及保留新增，变化以及初始化数据 为json
         SingleOutputStreamOperator<JSONObject> filterJsonObjectDS = kafkaDS.flatMap(new FlatMapFunction<String, JSONObject>() {
             @Override
             public void flatMap(String s, Collector<JSONObject> collector) throws Exception {
@@ -83,14 +83,11 @@ public class DimApp {
                 .build();
 
         DataStreamSource<String> streamSource = environment.fromSource(mySqlSource, WatermarkStrategy.noWatermarks(), "MySQLSource");
-//        streamSource.print();
-
         //TODO 5，将配置流处理为广播流
         MapStateDescriptor<String, TableProcess> mapStateDescriptor = new MapStateDescriptor<String, TableProcess>("map-state",String.class, TableProcess.class);
         BroadcastStream<String> broadcastStream = streamSource.broadcast(mapStateDescriptor);
         //TODO 6，连接主流与广播流
         BroadcastConnectedStream<JSONObject, String> connectedStream = filterJsonObjectDS.connect(broadcastStream);
-
         //TODO 7，处理连接流，根据配置信息处理主流数据
         SingleOutputStreamOperator<JSONObject> dimDs = connectedStream.process(new TableProcessFunction(mapStateDescriptor));
         //TODO 8，将数据写出到Phoenix

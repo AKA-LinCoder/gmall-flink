@@ -1,21 +1,36 @@
 package com.echo.utils;
 
-import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.connector.kafka.source.KafkaSource;
+import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumerBase;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
-import org.apache.flink.streaming.connectors.kafka.shuffle.FlinkKafkaShuffle;
-import org.apache.flink.streaming.connectors.kafka.shuffle.FlinkKafkaShuffleConsumer;
+import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
+import java.io.IOException;
 import java.util.Properties;
 
 public class MyKafkaUtil {
 
     private static final String Kafka_server = "hadoop102:9092";
+
+    public static KafkaSource<String> getFlinkKafkaSource(String topic,String groupId){
+        Properties properties = new Properties();
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,Kafka_server);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG,groupId);
+
+        KafkaSource<String> kafkaSource = KafkaSource.<String>builder()
+                .setBootstrapServers(Kafka_server)
+                .setTopics(topic)
+                .setGroupId(groupId)
+                .setDeserializer(KafkaRecordDeserializationSchema.of(new MyKafkaDeserialization()) )
+                .build();
+
+        return kafkaSource;
+    }
 
 
     public static FlinkKafkaConsumer<String> getFlinkKafkaConsumer(String topic,String groupId){
@@ -46,3 +61,4 @@ public class MyKafkaUtil {
         }, properties);
     }
 }
+
