@@ -1,5 +1,6 @@
 package com.echo.utils;
 
+import org.apache.flink.api.common.serialization.SimpleStringSchema;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.connector.kafka.source.KafkaSource;
@@ -16,6 +17,17 @@ import java.util.Properties;
 public class MyKafkaUtil {
 
     private static final String Kafka_server = "hadoop102:9092";
+
+
+    public static FlinkKafkaConsumer<String> getFlinkKafkaConsumer1(String topic,String groupId){
+        Properties properties = new Properties();
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,Kafka_server);
+        properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG,groupId);
+        ///SimpleStringSchema Flink 提供的用于将 Kafka 消息序列化为字符串的简单实现
+        //不用这个的原因是为了处理空数据
+        return new FlinkKafkaConsumer<String>(topic,new SimpleStringSchema(),properties);
+    }
+
 
     public static KafkaSource<String> getFlinkKafkaSource(String topic,String groupId){
         Properties properties = new Properties();

@@ -1,16 +1,12 @@
 package com.echo.utils;
 
+import org.apache.flink.api.common.typeinfo.BasicArrayTypeInfo;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class MyKafkaDeserialization implements KafkaDeserializationSchema<String> {
-
-    @Override
-    public TypeInformation<String> getProducedType() {
-        return BasicTypeInfo.STRING_TYPE_INFO;
-    }
 
     @Override
     public boolean isEndOfStream(String s) {
@@ -24,5 +20,10 @@ public class MyKafkaDeserialization implements KafkaDeserializationSchema<String
         }else {
             return new String(consumerRecord.value());
         }
+    }
+
+    @Override
+    public TypeInformation<String> getProducedType() {
+        return BasicTypeInfo.STRING_TYPE_INFO;
     }
 }
