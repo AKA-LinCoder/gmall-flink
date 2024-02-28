@@ -2,6 +2,7 @@ package com.echo.app.dim;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.echo.app.func.DimSinkFunction;
 import com.echo.app.func.TableProcessFunction;
 import com.echo.bean.TableProcess;
 import com.echo.utils.MyKafkaUtil;
@@ -23,6 +24,9 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
 import java.util.Properties;
+
+//数据流  web/app -> nginx -> 业务服务器 -> mysql（binlog）-> maxwell加载数据 -> 写到Kafka(ODS) -> 当前程序flinkApp消费 -> 写入到phoenix
+//  程序  Mock(web/app -> nginx -> 业务服务器) ->  mysql（binlog）-> maxwell加载数据 -> 写到Kafka(依赖ZK) -> DimApp(FlinkCDC) -> 写入到phoenix(HBase/ZK/HDFS)
 
 
 public class DimApp {
@@ -93,6 +97,7 @@ public class DimApp {
         SingleOutputStreamOperator<JSONObject> dimDs = connectedStream.process(new TableProcessFunction(mapStateDescriptor));
         //TODO 8，将数据写出到Phoenix
         dimDs.print(">>>>>>>>");
+        dimDs.addSink(new DimSinkFunction());
 //        //TODO 9 启动任务
         environment.execute("dimApp");
     }
