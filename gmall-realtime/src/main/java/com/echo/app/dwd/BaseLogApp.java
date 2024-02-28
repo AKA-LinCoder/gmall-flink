@@ -176,6 +176,10 @@ public class BaseLogApp {
         displayDS.addSink(MyKafkaUtil.getFlinkKafkaProducer(display_topic));
         actionDS.addSink(MyKafkaUtil.getFlinkKafkaProducer(action_topic));
         errorDS.addSink(MyKafkaUtil.getFlinkKafkaProducer(error_topic));
+        //生产者
+        //bin/kafka-console-producer.sh --broker-list hadoop102:9092 --topic topic_log
+        //消费者 如果没有主题 会有警告但是不用管 生产者会创建主题，
+        //bin/kafka-console-consumer.sh --bootstrap-server hadoop102:9092 --topic dwd_traffic_page_log
 
         //TODO 9 启动任务
         environment.execute("BaseLogApp");
