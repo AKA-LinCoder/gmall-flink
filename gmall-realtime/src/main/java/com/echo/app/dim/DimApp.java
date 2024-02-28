@@ -29,6 +29,15 @@ import java.util.Properties;
 //  程序  Mock(web/app -> nginx -> 业务服务器) ->  mysql（binlog）-> maxwell加载数据 -> 写到Kafka(依赖ZK) -> DimApp(FlinkCDC) -> 写入到phoenix(HBase/ZK/HDFS)
 
 
+//DIM层
+//DIM层的设计依据是维度建模理论，该层存储维度模型的维度表。
+//DIM层的数据存储在 HBase 表中
+
+
+//DWD层 拆分
+//DWD层的设计依据是维度建模理论，该层存储维度模型的事实表
+
+
 public class DimApp {
 
     //hadoop,zookeeper,kafka,maxwell,HBase,flume

@@ -6,11 +6,15 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.connector.kafka.source.KafkaSource;
 import org.apache.flink.connector.kafka.source.reader.deserializer.KafkaRecordDeserializationSchema;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer;
+import org.apache.flink.streaming.connectors.kafka.FlinkKafkaProducer;
 import org.apache.flink.streaming.connectors.kafka.KafkaDeserializationSchema;
+import org.apache.flink.streaming.connectors.kafka.KafkaSerializationSchema;
 import org.apache.flink.util.Collector;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.clients.producer.ProducerRecord;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -71,6 +75,26 @@ public class MyKafkaUtil {
                 return BasicTypeInfo.STRING_TYPE_INFO;
             }
         }, properties);
+
     }
+
+    public static   FlinkKafkaProducer<String> getFlinkKafkaProducer(String topic){
+        return new FlinkKafkaProducer<String>(Kafka_server,topic,new SimpleStringSchema());
+    }
+
+    public static   FlinkKafkaProducer<String> getFlinkKafkaProducer2(String topic,String defaultTopic){
+        Properties properties = new Properties();
+        properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,Kafka_server);
+        return new FlinkKafkaProducer<String>(defaultTopic, new KafkaSerializationSchema<String>() {
+            @Override
+            public ProducerRecord<byte[], byte[]> serialize(String s, @Nullable Long aLong) {
+                if(s == null){
+                    return new ProducerRecord<>(topic,"".getBytes());
+                }
+                return new ProducerRecord<>(topic,s.getBytes());
+            }
+        },properties, FlinkKafkaProducer.Semantic.EXACTLY_ONCE);
+    }
+
 }
 
