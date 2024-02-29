@@ -18,6 +18,10 @@ import org.apache.flink.streaming.api.functions.ProcessFunction;
 import org.apache.flink.util.Collector;
 import org.apache.flink.util.OutputTag;
 
+
+//数据流 web/app 发送请求 ->nginx -> 日志服务器(.log) -> flume -> Kafka(ods) -> flinkApp -> Kafka(DWD)
+//程序 Mock(lg.sh) -> flume -> kafka -> baseLogApp -> Kafka(Zk)
+
 public class BaseLogApp {
     public static void main(String[] args) throws Exception {
         //TODO 1 获取执行环境
