@@ -140,3 +140,25 @@ Maxwell数据格式:
 {"common":{"ar":"110000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone Xs","mid":"mid_7826605","os":"iOS 13.3.1","uid":"884","vc":"v2.1.132"},"page":{"during_time":4795,"last_page_id":"mine","page_id":"orders_unpaid"},"ts":1651303985000}
 {"common":{"ar":"110000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone Xs","mid":"mid_7826605","os":"iOS 13.3.1","uid":"884","vc":"v2.1.132"},"page":{"during_time":5665,"item":"16,3,23","item_type":"sku_ids","last_page_id":"orders_unpaid","page_id":"trade"},"ts":1651303986000}
 {"common":{"ar":"110000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone Xs","mid":"mid_7826605","os":"iOS 13.3.1","uid":"884","vc":"v2.1.132"},"page":{"during_time":6308,"item":"34,23,7","item_type":"sku_ids","last_page_id":"trade","page_id":"payment"},"ts":1651303987000}
+
+
+
+UV明细测试数据
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442864","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","last_page_id":"cart","page_id":"trade"},"ts":1651303987000}
+
+
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442864","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1651303991000}
+
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442865","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1651303987000}
+
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442865","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1751303987000}
+
+UV 跳出测试数据
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442864","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","last_page_id":"cart","page_id":"trade"},"ts":1651303987000}
+
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442864","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1651303991000}
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442864","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1651303994000}
+
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442564","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1651303994000}
+
+{"common":{"ar":"440000","ba":"iPhone","ch":"Appstore","is_new":"0","md":"iPhone X","mid":"mid_3442764","os":"iOS 12.4.1","uid":"928","vc":"v2.1.134"},"page":{"during_time":1957,"item":"19,3,20","item_type":"sku_ids","page_id":"trade"},"ts":1651304100000}

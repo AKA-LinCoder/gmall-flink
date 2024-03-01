@@ -46,7 +46,8 @@ public class DwdTrafficUniqueVisitorDetail {
                     }
 
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    System.out.println("存在脏数据>>>>>>>>\""+e.getMessage());
+//                    e.printStackTrace();
 //                    throw new RuntimeException(e);
                 }
             }

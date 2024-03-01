@@ -135,14 +135,13 @@ public class MyKafkaUtil {
      * @return 拼接好的Kafka数据源DDL
      */
     public static String getTopicDb(String groupId){
-
         return "CREATE TABLE topic_db (\n" +
                 " `database` STRING,\n" +
                 " `table` STRING,\n" +
-                " `type` STRING,\n"+
-                " `data` MAP<STRING,STRING>,\n"+
-                " `old` MAP<STRING,STRING>,\n"+
-                " `pt` AS PROCTIME()\n +" +
+                " `type` STRING,\n" +
+                " `data` MAP<STRING,STRING>,\n" +
+                " `old` MAP<STRING,STRING>,\n" +
+                " `pt` AS PROCTIME()\n" +
                 ") " + getKafkaDDL("topic_db",groupId);
     }
 
