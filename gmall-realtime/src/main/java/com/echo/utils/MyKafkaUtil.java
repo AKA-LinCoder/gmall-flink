@@ -110,6 +110,8 @@ public class MyKafkaUtil {
                 " 'topic' = '" + topic + "'," +
                 " 'properties.bootstrap.servers' = '" + Kafka_server + "', " +
                 " 'properties.group.id' = '" + groupId + "', " +
+                //解决Caused by: org.apache.kafka.clients.consumer.NoOffsetForPartitionException: Undefined offset with no reset policy for partitions: [topic_db-0]
+                " 'properties.auto.offset.reset' = 'earliest',"+
                 " 'format' = 'json', " +
                 " 'scan.startup.mode' = 'group-offsets')";
     }
