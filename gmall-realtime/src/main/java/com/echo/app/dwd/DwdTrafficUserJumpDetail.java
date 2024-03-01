@@ -99,5 +99,15 @@ public class DwdTrafficUserJumpDetail {
         unionDS.addSink(MyKafkaUtil.getFlinkKafkaProducer(targetTopic));
         //TODO 启动
         environment.execute("DwdTrafficUserJumpDetail");
+
+        //WaterMark可以结合开窗处理乱序数据，表示小于Watermark数据已经到齐
+        //维度退化
+
+
+        //FlinkSQL
+        //inner join 左表：onCreateAndWrite 右表 onCreateAndWrite
+        //left join 左表：onReadAndWrite 右表：onCreateAndWrite
+        //right join 左表：onCreateAndWrite 右表：onReadAndWrite
+
     }
 }
