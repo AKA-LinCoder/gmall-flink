@@ -143,7 +143,40 @@ public class DwdTradeOrderPreProcess  {
         tableEnvironment.createTemporaryView("result_table", resultTable);
         tableEnvironment.toChangelogStream(resultTable).print("result:>>>>");
         //TODO 创建upsert-kafka表
+        tableEnvironment.executeSql("" +
+                "create table dwd_trade_order_pre_process(\n" +
+                "id string,\n" +
+                "order_id string,\n" +
+                "user_id string,\n" +
+                "order_status string,\n" +
+                "sku_id string,\n" +
+                "sku_name string,\n" +
+                "province_id string,\n" +
+                "activity_id string,\n" +
+                "activity_rule_id string,\n" +
+                "coupon_id string,\n" +
+                "date_id string,\n" +
+                "create_time string,\n" +
+                "operate_date_id string,\n" +
+                "operate_time string,\n" +
+                "source_id string,\n" +
+                "source_type string,\n" +
+                "source_type_name string,\n" +
+                "sku_num string,\n" +
+//                "split_original_amount string,\n" +
+                "split_activity_amount string,\n" +
+                "split_coupon_amount string,\n" +
+                "split_total_amount string,\n" +
+                "`type` string,\n" +
+                "`old` map<string,string>,\n" +
+//                "od_ts string,\n" +
+//                "oi_ts string,\n" +
+//                "row_op_ts timestamp_ltz(3),\n" +
+                "primary key(id) not enforced\n" +
+                ")" + MyKafkaUtil.getUpsertKafkaDDL("dwd_trade_order_pre_process"));
+
         //TODO 将数据写出
+        tableEnvironment.executeSql("insert into dwd_trade_order_pre_process select * from result_table");
         //TODO 启动任务
         environment.execute("DwdTradeOrderPreProcess");
     }
