@@ -71,9 +71,36 @@ public class DwdTradeOrderPreProcess  {
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_info' ");
         tableEnvironment.createTemporaryView("order_info_table",orderInfoTable);
-        tableEnvironment.toChangelogStream(orderInfoTable).print(">>>>>>");
         //TODO 过滤出订单明细活动关联数据
+        Table orderDetailActivityTable = tableEnvironment.sqlQuery("" +
+                "select " +
+                "  data['id'] id, " +
+                "  data['order_id'] order_id, " +
+                "  data['order_detail_id'] order_detail_id, " +
+                "  data['activity_id'] activity_id, " +
+                "  data['activity_rule_id'] activity_rule_id, " +
+                "  data['sku_id'] sku_id, " +
+                "  data['create_time'] create_time, " +
+                "from topic_db " +
+                "where `database` = 'gmall' " +
+                "and `table` = 'order_detail_activity' ");
+        tableEnvironment.createTemporaryView("order_detail_activity_table",orderDetailActivityTable);
+                tableEnvironment.toChangelogStream(orderDetailActivityTable).print(">>>>>>");
         //TODO 过滤出订单明细购物券关联数据
+        Table orderDetailCouponTable = tableEnvironment.sqlQuery("" +
+                "select " +
+                "  data['id'] id, " +
+                "  data['order_id'] order_id, " +
+                "  data['order_detail_id'] order_detail_id, " +
+                "  data['coupon_id'] coupon_id, " +
+                "  data['coupon_use_id'] coupon_use_id, " +
+                "  data['sku_id'] sku_id, " +
+                "  data['create_time'] create_time, " +
+                "from topic_db " +
+                "where `database` = 'gmall' " +
+                "and `table` = 'order_detail_activity' ");
+        tableEnvironment.createTemporaryView("order_detail_coupon_table",orderDetailCouponTable);
+                tableEnvironment.toChangelogStream(orderDetailCouponTable).print(">>>>>>");
         //TODO 创建base_dic lookup表
         tableEnvironment.executeSql(MysqlUtil.getBaseDicLookUpDDL());
         //TODO 关联五张表
