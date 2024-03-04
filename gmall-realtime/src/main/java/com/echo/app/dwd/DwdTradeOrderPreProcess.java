@@ -30,13 +30,13 @@ public class DwdTradeOrderPreProcess  {
                 "  data['split_total_amount'] split_total_amount, " +
                 "  data['split_activity_amount'] split_activity_amount, " +
                 "  data['split_coupon_amount'] split_coupon_amount, " +
-                "  pt " +
+                "  `pt` " +
                 "from topic_db " +
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_detail' ");
         tableEnvironment.createTemporaryView("order_detail_table",orderDetailTable);
         //转化为流并测试
-        tableEnvironment.toChangelogStream(orderDetailTable).print(">>>>>>");
+//        tableEnvironment.toChangelogStream(orderDetailTable).print(">>>>>>");
         //TODO 过滤出订单数据
         Table orderInfoTable = tableEnvironment.sqlQuery("" +
                 "select " +
@@ -65,8 +65,8 @@ public class DwdTradeOrderPreProcess  {
                 "  data['feight_fee'] feight_fee, " +
                 "  data['feight_fee_reduce'] feight_fee_reduce, " +
                 "  data['refundable_time'] refundable_time, " +
-                "  type " +
-                "  old " +
+                "  `type`, " +
+                "  `old` " +
                 "from topic_db " +
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_info' ");
