@@ -141,7 +141,7 @@ public class DwdTradeOrderPreProcess  {
                 "join `base_dic` for system_time as of od.pt as dic\n" +
                 "on od.source_type = dic.dic_code");
         tableEnvironment.createTemporaryView("result_table", resultTable);
-        tableEnvironment.toChangelogStream(resultTable).print("result:>>>>");
+//        tableEnvironment.toChangelogStream(resultTable).print("result:>>>>");
         //TODO 创建upsert-kafka表
         tableEnvironment.executeSql("" +
                 "create table dwd_trade_order_pre_process(\n" +
@@ -176,7 +176,7 @@ public class DwdTradeOrderPreProcess  {
                 ")" + MyKafkaUtil.getUpsertKafkaDDL("dwd_trade_order_pre_process"));
 
         //TODO 将数据写出
-        tableEnvironment.executeSql("insert into dwd_trade_order_pre_process select * from result_table");
+        tableEnvironment.executeSql("insert into dwd_trade_order_pre_process select * from result_table").print();
         //TODO 启动任务
         environment.execute("DwdTradeOrderPreProcess");
     }
