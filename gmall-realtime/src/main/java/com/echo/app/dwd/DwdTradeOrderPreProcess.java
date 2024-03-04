@@ -34,10 +34,44 @@ public class DwdTradeOrderPreProcess  {
                 "from topic_db " +
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_detail' ");
-//        tableEnvironment.createTemporaryView("order_detail_table",orderDetailTable);
+        tableEnvironment.createTemporaryView("order_detail_table",orderDetailTable);
         //转化为流并测试
         tableEnvironment.toChangelogStream(orderDetailTable).print(">>>>>>");
         //TODO 过滤出订单数据
+        Table orderInfoTable = tableEnvironment.sqlQuery("" +
+                "select " +
+                "  data['id'] id, " +
+                "  data['consignee'] consignee, " +
+                "  data['consignee_tel'] consignee_tel, " +
+                "  data['total_amount'] total_amount, " +
+                "  data['order_price'] order_price, " +
+                "  data['order_status'] order_status, " +
+                "  data['user_id'] user_id, " +
+                "  data['payment_way'] payment_way, " +
+                "  data['delivery_address'] delivery_address, " +
+                "  data['order_comment'] order_comment, " +
+                "  data['out_trade_no'] out_trade_no, " +
+                "  data['trade_body'] trade_body, " +
+                "  data['create_time'] create_time, " +
+                "  data['operate_time'] operate_time, " +
+                "  data['expire_time'] expire_time, " +
+                "  data['process_status'] process_status, " +
+                "  data['tracking_no'] tracking_no, " +
+                "  data['parent_order_id'] parent_order_id, " +
+                "  data['province_id'] province_id, " +
+                "  data['activity_reduce_amount'] activity_reduce_amount, " +
+                "  data['coupon_reduce_amount'] coupon_reduce_amount, " +
+                "  data['original_total_amount'] original_total_amount, " +
+                "  data['feight_fee'] feight_fee, " +
+                "  data['feight_fee_reduce'] feight_fee_reduce, " +
+                "  data['refundable_time'] refundable_time, " +
+                "  type " +
+                "  old " +
+                "from topic_db " +
+                "where `database` = 'gmall' " +
+                "and `table` = 'order_info' ");
+        tableEnvironment.createTemporaryView("order_info_table",orderInfoTable);
+        tableEnvironment.toChangelogStream(orderInfoTable).print(">>>>>>");
         //TODO 过滤出订单明细活动关联数据
         //TODO 过滤出订单明细购物券关联数据
         //TODO 创建base_dic lookup表
