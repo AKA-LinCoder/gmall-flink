@@ -31,10 +31,10 @@ public class DwdTradeOrderPreProcess  {
                 "  data['split_activity_amount'] split_activity_amount, " +
                 "  data['split_coupon_amount'] split_coupon_amount, " +
                 "  pt " +
-                "from topic_db" +
-                "where `database` = 'gmall'" +
-                "and `table` = 'order_detail '");
-        tableEnvironment.createTemporaryView("order_detail_table",orderDetailTable);
+                "from topic_db " +
+                "where `database` = 'gmall' " +
+                "and `table` = 'order_detail' ");
+//        tableEnvironment.createTemporaryView("order_detail_table",orderDetailTable);
         //转化为流并测试
         tableEnvironment.toChangelogStream(orderDetailTable).print(">>>>>>");
         //TODO 过滤出订单数据
