@@ -80,7 +80,7 @@ public class DwdTradeOrderPreProcess  {
                 "  data['activity_id'] activity_id, " +
                 "  data['activity_rule_id'] activity_rule_id, " +
                 "  data['sku_id'] sku_id, " +
-                "  data['create_time'] create_time, " +
+                "  data['create_time'] create_time " +
                 "from topic_db " +
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_detail_activity' ");
@@ -95,10 +95,10 @@ public class DwdTradeOrderPreProcess  {
                 "  data['coupon_id'] coupon_id, " +
                 "  data['coupon_use_id'] coupon_use_id, " +
                 "  data['sku_id'] sku_id, " +
-                "  data['create_time'] create_time, " +
+                "  data['create_time'] create_time " +
                 "from topic_db " +
                 "where `database` = 'gmall' " +
-                "and `table` = 'order_detail_activity' ");
+                "and `table` = 'order_detail_coupon' ");
         tableEnvironment.createTemporaryView("order_detail_coupon_table",orderDetailCouponTable);
                 tableEnvironment.toChangelogStream(orderDetailCouponTable).print(">>>>>>");
         //TODO 创建base_dic lookup表
