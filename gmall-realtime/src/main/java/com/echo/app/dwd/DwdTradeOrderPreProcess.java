@@ -104,9 +104,49 @@ public class DwdTradeOrderPreProcess  {
         //TODO 创建base_dic lookup表
         tableEnvironment.executeSql(MysqlUtil.getBaseDicLookUpDDL());
         //TODO 关联五张表
+        Table resultTable = tableEnvironment.sqlQuery(""+
+                "select \n" +
+                "od.id,\n" +
+                "od.order_id,\n" +
+                "oi.user_id,\n" +
+                "oi.order_status,\n" +
+                "od.sku_id,\n" +
+                "od.sku_name,\n" +
+                "oi.province_id,\n" +
+                "act.activity_id,\n" +
+                "act.activity_rule_id,\n" +
+                "cou.coupon_id,\n" +
+                "date_format(od.create_time, 'yyyy-MM-dd') date_id,\n" +
+                "od.create_time,\n" +
+                "date_format(oi.operate_time, 'yyyy-MM-dd') operate_date_id,\n" +
+                "oi.operate_time,\n" +
+                "od.source_id,\n" +
+                "od.source_type source_type_id,\n" +
+                "dic.dic_name source_type_name,\n" +
+                "od.sku_num,\n" +
+                "od.split_original_amount,\n" +
+                "od.split_activity_amount,\n" +
+                "od.split_coupon_amount,\n" +
+                "od.split_total_amount,\n" +
+                "oi.`type`,\n" +
+                "oi.`old`,\n" +
+                "od.od_ts,\n" +
+                "oi.oi_ts,\n" +
+                "current_row_timestamp() row_op_ts\n" +
+                "from order_detail od \n" +
+                "join order_info oi\n" +
+                "on od.order_id = oi.id\n" +
+                "left join order_detail_activity act\n" +
+                "on od.id = act.order_detail_id\n" +
+                "left join order_detail_coupon cou\n" +
+                "on od.id = cou.order_detail_id\n" +
+                "join `base_dic` for system_time as of od.proc_time as dic\n" +
+                "on od.source_type = dic.dic_code");
+        tableEnvironment.createTemporaryView("result_table", resultTable);
+        tableEnvironment.toChangelogStream(resultTable).print("result:>>>>");
         //TODO 创建upsert-kafka表
         //TODO 将数据写出
         //TODO 启动任务
-        environment.execute("");
+        environment.execute("DwdTradeOrderPreProcess");
     }
 }
