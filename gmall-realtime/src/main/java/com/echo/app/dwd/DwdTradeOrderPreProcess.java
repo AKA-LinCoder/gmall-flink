@@ -85,7 +85,6 @@ public class DwdTradeOrderPreProcess  {
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_detail_activity' ");
         tableEnvironment.createTemporaryView("order_detail_activity_table",orderDetailActivityTable);
-                tableEnvironment.toChangelogStream(orderDetailActivityTable).print(">>>>>>");
         //TODO 过滤出订单明细购物券关联数据
         Table orderDetailCouponTable = tableEnvironment.sqlQuery("" +
                 "select " +
@@ -100,7 +99,6 @@ public class DwdTradeOrderPreProcess  {
                 "where `database` = 'gmall' " +
                 "and `table` = 'order_detail_coupon' ");
         tableEnvironment.createTemporaryView("order_detail_coupon_table",orderDetailCouponTable);
-                tableEnvironment.toChangelogStream(orderDetailCouponTable).print(">>>>>>");
         //TODO 创建base_dic lookup表
         tableEnvironment.executeSql(MysqlUtil.getBaseDicLookUpDDL());
         //TODO 关联五张表
@@ -124,23 +122,23 @@ public class DwdTradeOrderPreProcess  {
                 "od.source_type source_type_id,\n" +
                 "dic.dic_name source_type_name,\n" +
                 "od.sku_num,\n" +
-                "od.split_original_amount,\n" +
+//                "od.split_original_amount,\n" +
                 "od.split_activity_amount,\n" +
                 "od.split_coupon_amount,\n" +
                 "od.split_total_amount,\n" +
                 "oi.`type`,\n" +
-                "oi.`old`,\n" +
-                "od.od_ts,\n" +
-                "oi.oi_ts,\n" +
-                "current_row_timestamp() row_op_ts\n" +
-                "from order_detail od \n" +
-                "join order_info oi\n" +
+                "oi.`old`\n" +
+//                "od.od_ts,\n" +
+//                "oi.oi_ts,\n" +
+//                "current_row_timestamp() row_op_ts\n" +
+                "from order_detail_table od \n" +
+                "join order_info_table oi\n" +
                 "on od.order_id = oi.id\n" +
-                "left join order_detail_activity act\n" +
+                "left join order_detail_activity_table act\n" +
                 "on od.id = act.order_detail_id\n" +
-                "left join order_detail_coupon cou\n" +
+                "left join order_detail_coupon_table cou\n" +
                 "on od.id = cou.order_detail_id\n" +
-                "join `base_dic` for system_time as of od.proc_time as dic\n" +
+                "join `base_dic` for system_time as of od.pt as dic\n" +
                 "on od.source_type = dic.dic_code");
         tableEnvironment.createTemporaryView("result_table", resultTable);
         tableEnvironment.toChangelogStream(resultTable).print("result:>>>>");
