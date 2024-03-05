@@ -7,12 +7,20 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
+import java.time.Duration;
+
+
+///数据流 ： web/app -》 nginx -> 业务服务器 (Mysql) -> maxwell -> kafka(ods) -> flinkApp -> kafka(dwd)
+/// 程序 mock -> mysql ->maxwell ->kafka(zk) -> DwdTradeOrderPreProcess->kafka(zk)
+
 public class DwdTradeOrderPreProcess  {
     public static void main(String[] args) throws Exception {
         //TODO 获取执行环境
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);
         StreamTableEnvironment tableEnvironment = StreamTableEnvironment.create(environment);
+        //设置状态ttl 生产环境设置为最大乱序程度
+        tableEnvironment.getConfig().setIdleStateRetention(Duration.ofSeconds(5));
         //TODO 创建topic_db表
         tableEnvironment.executeSql(MyKafkaUtil.getTopicDb("order_preProcess"));
         //TODO 过滤出订单明细数据
@@ -170,6 +178,7 @@ public class DwdTradeOrderPreProcess  {
                 "`type` string,\n" +
                 "`old` map<string,string>,\n" +
 //                "od_ts string,\n" +
+
 //                "oi_ts string,\n" +
 //                "row_op_ts timestamp_ltz(3),\n" +
                 "primary key(id) not enforced\n" +
