@@ -32,7 +32,7 @@ public class DwdTradePayDetailSuc  {
                 "and data['payment_status']='1602'"
         );
         tableEnvironment.createTemporaryView("payment_info", paymentInfo);
-        tableEnvironment.toChangelogStream(paymentInfo).print();
+//        tableEnvironment.toChangelogStream(paymentInfo).print();
         //消费下单主题数据
         tableEnvironment.executeSql("" +
                 "create table dwd_trade_order_detail(\n" +
