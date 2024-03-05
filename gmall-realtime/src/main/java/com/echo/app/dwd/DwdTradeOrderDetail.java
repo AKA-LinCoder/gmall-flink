@@ -22,6 +22,7 @@ public class DwdTradeOrderDetail  {
                 "order_id string,\n" +
                 "user_id string,\n" +
                 "order_status string,\n" +
+                "order_price string,\n" +
                 "sku_id string,\n" +
                 "sku_name string,\n" +
                 "province_id string,\n" +
@@ -33,7 +34,7 @@ public class DwdTradeOrderDetail  {
                 "operate_date_id string,\n" +
                 "operate_time string,\n" +
                 "source_id string,\n" +
-                "source_type string,\n" +
+                "source_type_id string,\n" +
                 "source_type_name string,\n" +
                 "sku_num string,\n" +
 //                "split_original_amount string,\n" +
@@ -66,7 +67,7 @@ public class DwdTradeOrderDetail  {
                 "create_time,\n" +
                 "source_id,\n" +
 //                "source_type source_type_code,\n" +
-                "source_type source_type_id,\n" +
+                "source_type_id,\n" +
                 "source_type_name,\n" +
                 "sku_num,\n" +
 //                "split_original_amount,\n" +
@@ -87,7 +88,7 @@ public class DwdTradeOrderDetail  {
                 "sku_id string,\n" +
                 "sku_name string,\n" +
 //                "sku_num string,\n" +
-                "order_price string\n" +
+                "order_price string,\n" +
                 "province_id string,\n" +
                 "activity_id string,\n" +
                 "activity_rule_id string,\n" +
