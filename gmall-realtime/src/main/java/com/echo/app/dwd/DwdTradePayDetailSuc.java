@@ -8,6 +8,8 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 import java.time.Duration;
 
+///数据流 ： web/app -》 nginx -> 业务服务器 (Mysql) -> maxwell -> kafka(ods) -> flinkApp -> kafka(dwd) -> flinkapp -> kafka(dwd)  -> flinkapp -> kafka(dwd)
+/// 程序 mock -> mysql ->maxwell ->kafka(zk) -> DwdTradeOrderPreProcess->kafka(zk) -> DwdTradeOrderDetail->kafka(zk) -> DwdTradePayDetailSuc->kafka(zk)
 public class DwdTradePayDetailSuc  {
     public static void main(String[] args) throws Exception {
         //获取执行环境
