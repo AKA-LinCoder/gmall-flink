@@ -62,7 +62,7 @@ public class DwdTradeCancelDetail {
 //                "operate_date_id date_id,\n" +
                 "operate_time cancel_time,\n" +
                 "source_id,\n" +
-                "source_type_code,\n" +
+                "source_type_id,\n" +
                 "source_type_name,\n" +
                 "sku_num,\n" +
                 "order_price,\n"+
