@@ -116,7 +116,7 @@ public class DwdTradePayDetailSuc  {
 //                "split_original_amount string,\n" +
                 "split_activity_amount string,\n" +
                 "split_coupon_amount string,\n" +
-                "split_payment_amount string\n" +
+                "split_payment_amount string,\n" +
 //                "ts string,\n" +
 //                "row_op_ts timestamp_ltz(3),\n" +
                 "primary key(order_detail_id) not enforced\n" +
