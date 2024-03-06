@@ -39,7 +39,7 @@ public class DwsTrafficSourceKeywordPageViewWindow {
                 "and page['item_type'] = 'keyword' " +
                 "and page['item'] is not null");
         tableEnvironment.createTemporaryView("filter_table",filterTable);
-        //TODO 注册UDTF & 切词
+        //TODO 注册UDTF(一进多出) & 切词
         tableEnvironment.createTemporarySystemFunction("SplitFunction", SplitFunction.class);
         Table splitTable = tableEnvironment.sqlQuery("" +
                 "SELECT " +
