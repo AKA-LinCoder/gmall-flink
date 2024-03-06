@@ -39,6 +39,11 @@ public class BaseLogApp {
             public void processElement(String s, ProcessFunction<String, JSONObject>.Context context, Collector<JSONObject> collector) throws Exception {
                 try {
                     JSONObject jsonObject = JSON.parseObject(s);
+                    System.out.println(jsonObject.getJSONObject("common").getString("mid"));
+                    if(jsonObject.getJSONObject("common").getString("mid").equalsIgnoreCase("mid_3442864")){
+                        System.out.println("這是那條數據");
+
+                    }
                     //没有发生异常就输出到主流
                     collector.collect(jsonObject);
                 } catch (Exception e) {
@@ -169,7 +174,7 @@ public class BaseLogApp {
         errorDS.print("Error:>>>>>>>");
 
         // 定义不同日志输出到 Kafka 的主题名称
-        String page_topic = "dwd_traffic_page_log";
+        String page_topic = "dwd_traffic_page_log_1";
         String start_topic = "dwd_traffic_start_log";
         String display_topic = "dwd_traffic_display_log";
         String action_topic = "dwd_traffic_action_log";

@@ -31,7 +31,7 @@ public class DwdTrafficUserJumpDetail {
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);
         //TODO 读取Kafka页面日志主题数据创建流
-        String topic = "dwd_traffic_page_log";
+        String topic = "dwd_traffic_page_log_1";
         String groupID = "traffic_user_jump_detail";
         DataStreamSource<String> kafkaDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupID));
         //TODO 将每行数据转化为json对象

@@ -30,7 +30,7 @@ public class DwdTrafficUniqueVisitorDetail {
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);//生产环境设置为Kafka主题的分区数量
         //TODO 读取Kafka页面日志主题创建流
-        String topic = "dwd_traffic_page_log";
+        String topic = "dwd_traffic_page_log_1";
         String groupID = "Unique_visitor_detail";
         DataStreamSource<String> kafkaDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupID));
         //TODO 过滤上一跳页面不为null的数据并将每行数据转换为json

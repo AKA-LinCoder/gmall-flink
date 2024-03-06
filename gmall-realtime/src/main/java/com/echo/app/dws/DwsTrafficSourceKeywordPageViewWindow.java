@@ -14,21 +14,22 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class DwsTrafficSourceKeywordPageViewWindow {
     public static void main(String[] args) throws Exception {
-
+        try {
         //TODO 获取执行环境
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);
         StreamTableEnvironment tableEnvironment = StreamTableEnvironment.create(environment);
         //TODO 使用DDL 读取Kafka page_log主题的数据创建表，并且提取时间戳生成watermark
-        String topic = "dwd_traffic_page_log";
+        String topic = "dwd_traffic_page_log_1";
         String groupId = "dws_traffic_source_keyword_page_view_window";
         tableEnvironment.executeSql(""+
-                "create table page_log(" +
-                " `common` map<string,string>," +
-                " `ts` bigint," +
-                " `rt` TIMESTAMP(FROM_UNIXTIME(ts/1000))," +
-                "  WATERMARK FOR rt AS rt - INTERVAL '5' SECOND"+
-                "）"+ MyKafkaUtil.getKafkaDDL(topic,groupId));
+                "create table page_log( " +
+                "   `common` map<string,string>, " +
+                "   `page` map<string,string>, " +
+                "   `ts` bigint, " +
+                "   `rt` as TO_TIMESTAMP(FROM_UNIXTIME(ts/1000)), " +
+                "   WATERMARK FOR rt AS rt - INTERVAL '5' SECOND"+
+                ")"+ MyKafkaUtil.getKafkaDDL(topic,groupId));
         //TODO 过滤出搜索数据
         Table filterTable = tableEnvironment.sqlQuery("" +
                 "select " +
@@ -56,14 +57,23 @@ public class DwsTrafficSourceKeywordPageViewWindow {
                 "  'search' source, " +
                 "  word keyword, " +
                 "  count(*) keyword_count, " +
-                "  UNIX_TIMESTAMP()*1000 ts" +
+                "  UNIX_TIMESTAMP()*1000 ts " +
                 "from split_table " +
                 "group by word,TUMBLE(rt,INTERVAL '10' SECOND)");
+//        tableEnvironment.toDataStream(resultTable).print("oopop>>>>>");
         //TODO 将动态表转换为流
-        DataStream<KeywordBean> keywordBeanDataStream = tableEnvironment.toDataStream(resultTable, KeywordBean.class);
-        keywordBeanDataStream.print();
-        //TODO 将数据写出到clickhouse
-        //TODO 启动任务
-        environment.execute("");
+        DataStream<KeywordBean> keywordBeanDataStream = null;
+//        tableEnvironment.toDataStream(resultTable).print("oopop>>>>>");
+            keywordBeanDataStream = tableEnvironment.toDataStream(resultTable, KeywordBean.class);
+            keywordBeanDataStream.print("need show data >>>>>>>>>");
+            //TODO 将数据写出到clickhouse
+            //TODO 启动任务
+            environment.execute("DwsTrafficSourceKeywordPageViewWindow");
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("出現出錯"+e);
+        }
+
+
     }
 }
