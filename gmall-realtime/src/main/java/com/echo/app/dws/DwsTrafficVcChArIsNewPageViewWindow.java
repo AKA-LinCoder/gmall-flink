@@ -135,8 +135,7 @@ public class DwsTrafficVcChArIsNewPageViewWindow {
         });
         //TODO 将数据写入到clickhouse
         resultDS.print(">>>>>");
-        resultDS.addSink(MyClickHouseUtil.getSinkFunction("insert into dws_traffic_vc_ch_ar_is_new_page_view_window values(?,?,?,?,?,?,?,?,?,?,?,?)"
-        ));
+        resultDS.addSink(MyClickHouseUtil.getSinkFunction("insert into dws_traffic_vc_ch_ar_is_new_page_view_window values(?,?,?,?,?,?,?,?,?,?,?,?)"));
         //TODO 启动任务
         environment.execute("");
     }
