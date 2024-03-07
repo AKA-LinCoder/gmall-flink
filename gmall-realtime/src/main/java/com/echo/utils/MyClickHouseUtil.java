@@ -22,6 +22,7 @@ public class MyClickHouseUtil {
             @Override
             public void accept(PreparedStatement preparedStatement, T t) throws SQLException {
 
+                System.out.println("666");
                 //使用反射的方式获取t对象的数据
                 Class<?> tClass = t.getClass();
 
@@ -30,7 +31,7 @@ public class MyClickHouseUtil {
 //                    Method method = methods[i];
 //                    method.invoke(t);
 //                }
-                Field[] fields = tClass.getFields();
+                Field[] fields = tClass.getDeclaredFields();
                 int offset = 0;
                 //遍历属性
                 for (int i = 0; i < fields.length; i++) {
@@ -61,6 +62,8 @@ public class MyClickHouseUtil {
                 .build(),new JdbcConnectionOptions.JdbcConnectionOptionsBuilder()
                         .withDriverName(GmallConfig.CLICKHOUSE_DRIVER)
                         .withUrl(GmallConfig.CLICKHOUSE_URL)
+                        .withPassword("Estim@b509")
+                        .withUsername("default")
                 .build());
     }
 }

@@ -73,8 +73,8 @@ public class DwsTrafficSourceKeywordPageViewWindow {
             //TODO 启动任务
             environment.execute("DwsTrafficSourceKeywordPageViewWindow");
         } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println("出現出錯"+e);
+//            e.printStackTrace();
+//            System.out.println("出現出錯"+e);
         }
 
 
