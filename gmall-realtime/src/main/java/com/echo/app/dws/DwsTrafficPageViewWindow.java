@@ -28,6 +28,10 @@ import org.apache.flink.util.Collector;
 import java.time.Duration;
 
 //页面浏览数据获取
+
+
+//数据流 web/app 发送请求 ->nginx -> 日志服务器(.log) -> flume -> Kafka(ods) -> flinkApp -> Kafka(DWD) -> flinkApp -> clickhouse(DWs)
+//程序 Mock(lg.sh) -> flume -> kafka -> baseLogApp -> Kafka(Zk) -> DwsTrafficPageViewWindow -> clickhouse(ZK)
 public class DwsTrafficPageViewWindow {
     public static void main(String[] args) throws Exception {
         //TODO 环境
