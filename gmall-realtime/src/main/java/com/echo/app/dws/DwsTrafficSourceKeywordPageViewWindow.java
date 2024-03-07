@@ -16,7 +16,6 @@ import org.apache.flink.table.api.bridge.java.StreamTableEnvironment;
 
 public class DwsTrafficSourceKeywordPageViewWindow {
     public static void main(String[] args) throws Exception {
-        try {
         //TODO 获取执行环境
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);
@@ -62,21 +61,13 @@ public class DwsTrafficSourceKeywordPageViewWindow {
                 "  UNIX_TIMESTAMP()*1000 ts " +
                 "from split_table " +
                 "group by word,TUMBLE(rt,INTERVAL '10' SECOND)");
-//        tableEnvironment.toDataStream(resultTable).print("oopop>>>>>");
         //TODO 将动态表转换为流
         DataStream<KeywordBean> keywordBeanDataStream = null;
-//        tableEnvironment.toDataStream(resultTable).print("oopop>>>>>");
             keywordBeanDataStream = tableEnvironment.toDataStream(resultTable, KeywordBean.class);
             keywordBeanDataStream.print("need show data >>>>>>>>>");
             //TODO 将数据写出到clickhouse
             keywordBeanDataStream.addSink(MyClickHouseUtil.getSinkFunction("insert into dws_traffic_source_keyword_page_view_window values(?,?,?,?,?,?)"));
             //TODO 启动任务
             environment.execute("DwsTrafficSourceKeywordPageViewWindow");
-        } catch (Exception e) {
-//            e.printStackTrace();
-//            System.out.println("出現出錯"+e);
-        }
-
-
     }
 }

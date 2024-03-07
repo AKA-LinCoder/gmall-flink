@@ -22,7 +22,6 @@ public class MyClickHouseUtil {
             @Override
             public void accept(PreparedStatement preparedStatement, T t) throws SQLException {
 
-                System.out.println("666");
                 //使用反射的方式获取t对象的数据
                 Class<?> tClass = t.getClass();
 
