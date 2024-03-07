@@ -2,7 +2,9 @@ package com.echo.app.dws;
 
 import com.echo.app.func.SplitFunction;
 import com.echo.bean.KeywordBean;
+import com.echo.utils.MyClickHouseUtil;
 import com.echo.utils.MyKafkaUtil;
+import org.apache.flink.connector.jdbc.JdbcSink;
 import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.table.api.Table;
@@ -40,7 +42,7 @@ public class DwsTrafficSourceKeywordPageViewWindow {
                 "and page['item_type'] = 'keyword' " +
                 "and page['item'] is not null");
         tableEnvironment.createTemporaryView("filter_table",filterTable);
-        //TODO 注册UDTF(一进多出) & 切词
+        //TODO 注册UDTF(一进多出) & 切词   如果用流就要用flatmap
         tableEnvironment.createTemporarySystemFunction("SplitFunction", SplitFunction.class);
         Table splitTable = tableEnvironment.sqlQuery("" +
                 "SELECT " +
@@ -67,6 +69,7 @@ public class DwsTrafficSourceKeywordPageViewWindow {
             keywordBeanDataStream = tableEnvironment.toDataStream(resultTable, KeywordBean.class);
             keywordBeanDataStream.print("need show data >>>>>>>>>");
             //TODO 将数据写出到clickhouse
+            keywordBeanDataStream.addSink(MyClickHouseUtil.getSinkFunction("insert into dws_traffic_source_keyword_page_view_window values(?,?,?,?,?,?)"));
             //TODO 启动任务
             environment.execute("DwsTrafficSourceKeywordPageViewWindow");
         } catch (Exception e) {
