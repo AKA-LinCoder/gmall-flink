@@ -38,7 +38,7 @@ public class DwsTrafficPageViewWindow {
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);
         //TODO  读取Kafka页面日志主题数据创建流
-        String topic = "dwd_traffic_page_log";
+        String topic = "dwd_traffic_page_log_1";
         String groupId = "dws_traffic_page_view_window";
         DataStreamSource<String> kafkaDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupId));
         //TODO 将每行数据转换为json对象并过滤
@@ -49,6 +49,7 @@ public class DwsTrafficPageViewWindow {
                 JSONObject jsonObject = JSON.parseObject(s);
                 String pageId = jsonObject.getJSONObject("page").getString("page_id");
                 if ("home".equals(pageId) || "good_detail".equals(pageId)) {
+                    System.out.println("fake data");
                     collector.collect(jsonObject);
                 }
             }

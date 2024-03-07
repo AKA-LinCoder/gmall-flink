@@ -34,7 +34,7 @@ public class DwsTrafficVcChArIsNewPageViewWindow {
         String groupId = "dws_traffic_channel_page_view_window";
         String ujdTopic = "dwd_traffic_user_jump_detail";
         String uvTopic = "dwd_traffic_unique_visitor_detail";
-        String topic = "dwd_traffic_page_log";
+        String topic = "dwd_traffic_page_log_1";
         DataStreamSource<String> uvDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(ujdTopic, groupId));
         DataStreamSource<String> ujDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(ujdTopic, groupId));
         DataStreamSource<String> pageDS = environment.addSource(MyKafkaUtil.getFlinkKafkaConsumer(topic, groupId));
