@@ -29,7 +29,6 @@ import java.time.Duration;
 
 //页面浏览数据获取
 
-
 //数据流 web/app 发送请求 ->nginx -> 日志服务器(.log) -> flume -> Kafka(ods) -> flinkApp -> Kafka(DWD) -> flinkApp -> clickhouse(DWs)
 //程序 Mock(lg.sh) -> flume -> kafka -> baseLogApp -> Kafka(Zk) -> DwsTrafficPageViewWindow -> clickhouse(ZK)
 public class DwsTrafficPageViewWindow {
@@ -45,11 +44,9 @@ public class DwsTrafficPageViewWindow {
         SingleOutputStreamOperator<JSONObject> jsonObjDS = kafkaDS.flatMap(new FlatMapFunction<String, JSONObject>() {
             @Override
             public void flatMap(String s, Collector<JSONObject> collector) throws Exception {
-
                 JSONObject jsonObject = JSON.parseObject(s);
                 String pageId = jsonObject.getJSONObject("page").getString("page_id");
                 if ("home".equals(pageId) || "good_detail".equals(pageId)) {
-                    System.out.println("fake data");
                     collector.collect(jsonObject);
                 }
             }
@@ -137,7 +134,7 @@ public class DwsTrafficPageViewWindow {
             }
         });
         //TODO 将数据写出
-        resultDS.print(">>>>>>>");
+        resultDS.print("dws_traffic_page_view_window >>>>>>>");
         resultDS.addSink(MyClickHouseUtil.getSinkFunction("insert into dws_traffic_page_view_window values(?,?,?,?,?)"));
         //TODO 启动
         environment.execute("DwsTrafficPageViewWindow");
