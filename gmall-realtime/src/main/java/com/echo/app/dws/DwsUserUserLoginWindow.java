@@ -94,7 +94,7 @@ public class DwsUserUserLoginWindow {
                 }
 
                 if (uv != 0L) {
-                    collector.collect(new UserLoginBean("", "", uv, backUv, ts));
+                    collector.collect(new UserLoginBean("", "", backUv,uv, ts));
                 }
 
 
