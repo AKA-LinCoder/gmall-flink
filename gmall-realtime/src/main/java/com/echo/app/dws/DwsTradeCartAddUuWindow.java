@@ -75,13 +75,18 @@ public class DwsTradeCartAddUuWindow {
 
                 //获取状态数据以及当前数据的日期
                 String lastDt = lastCartAddState.value();
-                Long ts = jsonObject.getLong("ts");
-
-                String curDt = DateFormatUtil.toDate(ts);
+                String operateTime = jsonObject.getString("operate_time");
+                String curDt = null;
+                if(operateTime!=null){
+                   curDt = operateTime.split(" ")[0];
+                }else{
+                    String createTime = jsonObject.getString("create_time");
+                    curDt = createTime.split(" ")[0];
+                }
                 if (lastDt == null || !lastDt.equals(curDt)) {
 
                     lastCartAddState.update(curDt);
-                    collector.collect(new CartAddUuBean("", "", 1L, ts));
+                    collector.collect(new CartAddUuBean("", "", 1L, null));
                 }
 
             }
