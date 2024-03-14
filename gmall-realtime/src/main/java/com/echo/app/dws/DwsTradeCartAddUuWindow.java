@@ -41,6 +41,7 @@ public class DwsTradeCartAddUuWindow {
             public void flatMap(String s, Collector<JSONObject> collector) throws Exception {
                 JSONObject jsonObject = JSON.parseObject(s);
                 collector.collect(jsonObject);
+                return null;
             }
         });
         //生成watermark
@@ -88,10 +89,8 @@ public class DwsTradeCartAddUuWindow {
                     lastCartAddState.update(curDt);
                     collector.collect(new CartAddUuBean("", "", 1L, null));
                 }
-
+                return null;
             }
-
-
         });
         //开窗聚合
         SingleOutputStreamOperator<CartAddUuBean> resultDS = cartAddDS.windowAll(TumblingEventTimeWindows.of(org.apache.flink.streaming.api.windowing.time.Time.seconds(10))).reduce(new ReduceFunction<CartAddUuBean>() {

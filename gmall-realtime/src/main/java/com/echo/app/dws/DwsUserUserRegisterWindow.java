@@ -38,6 +38,7 @@ public class DwsUserUserRegisterWindow {
                 JSONObject jsonObject = JSON.parseObject(s);
                 String createTime = jsonObject.getString("create_time");
                 collector.collect(new UserRegisterBean("", "", 1L, DateFormatUtil.toTs(createTime,true)));
+                return null;
             }
         });
         //TODO 提取时间戳生成watermark

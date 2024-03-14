@@ -78,7 +78,6 @@ public class DimApp {
                 } catch (Exception e) {
                     System.out.println("发现脏数据" + s);
                 }
-
             }
         });
         Properties prop = new Properties();

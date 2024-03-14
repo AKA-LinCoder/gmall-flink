@@ -108,8 +108,6 @@ public class DwsTrafficPageViewWindow {
                 if (homeCt == 1L || detailCt == 1L) {
                     collector.collect(new TrafficHomeDetailPageViewBean("", "", homeCt, detailCt, jsonObject.getLong("ts")));
                 }
-
-
             }
         });
         //TODO 开窗聚合
