@@ -1,9 +1,7 @@
-package org.echo.controller;
+package com.echo.gmallpublisher2024.controller;
 
-import org.echo.service.GmvService;
+import com.echo.gmallpublisher2024.service.GmvService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

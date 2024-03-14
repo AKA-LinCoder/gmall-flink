@@ -36,7 +36,7 @@ public class DwsTradeTrademarkCategoryUserRefundWindow {
                     .build();
         });
         //TODO 关联sku_info维表补充tm_id以及category3_id
-        AsyncDataStream.unorderedWait(tradeTrademarkCategoryUserRefundBeanDS,new DimAsyncFunction)
+//        AsyncDataStream.unorderedWait(tradeTrademarkCategoryUserRefundBeanDS,new DimAsyncFunction)
         //TODO 分组开窗聚合
         //TODO 关联维表补充其他字段
         //TODO 写入clickhouse

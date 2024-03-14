@@ -1,11 +1,9 @@
-package org.echo.service.impl;
+package com.echo.gmallpublisher2024.service.impl;
 
-import org.echo.mapper.GmvMapper;
-import org.echo.service.GmvService;
+import com.echo.gmallpublisher2024.mapper.GmvMapper;
+import com.echo.gmallpublisher2024.service.GmvService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
 
 @Service
 public class GmvServiceImpl implements GmvService {

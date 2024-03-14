@@ -1,8 +1,6 @@
-package org.echo.mapper;
+package com.echo.gmallpublisher2024.mapper;
 
 import org.apache.ibatis.annotations.Select;
-
-import java.math.BigDecimal;
 
 public interface GmvMapper {
     //查询clickhouse
