@@ -1,6 +1,6 @@
-package com.echo.kafka;
+package com.echo.kafkalearning;
 
-import com.fasterxml.jackson.datatype.jdk8.StreamSerializer;
+
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
