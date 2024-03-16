@@ -55,7 +55,6 @@ public class SugarController {
         Map uvByCh = uvService.getUvByCh(date);
         Set set = uvByCh.keySet();
         Collection values = uvByCh.values();
-
         return "{\n" +
                 "  \"status\": 0,\n" +
                 "  \"msg\": \"\",\n" +
@@ -65,7 +64,7 @@ public class SugarController {
                 "    \"],\n" +
                 "    \"series\": [\n" +
                 "      {\n" +
-                "        \"name\": \"渠道\",\n" +
+                "        \"name\": \"独立访客\",\n" +
                 "        \"data\": [\n" +
                 StringUtils.join(values,",") +
                 "        ]\n" +
@@ -74,8 +73,6 @@ public class SugarController {
                 "  }\n" +
                 "}";
     }
-
-
 
     private int getToday() {
         long currentTimeMillis = System.currentTimeMillis();
