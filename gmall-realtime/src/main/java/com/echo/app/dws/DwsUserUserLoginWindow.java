@@ -48,7 +48,6 @@ public class DwsUserUserLoginWindow {
                 if (uid != null && (lastPageId == null || lastPageId.equals("login"))) {
                     collector.collect(jsonObject);
                 }
-                return null;
             }
         });
         //TODO 提取事件时间生成watermark
@@ -97,9 +96,6 @@ public class DwsUserUserLoginWindow {
                 if (uv != 0L) {
                     collector.collect(new UserLoginBean("", "", backUv,uv, ts));
                 }
-
-
-                return null;
             }
         });
         //TODO 开窗聚合
