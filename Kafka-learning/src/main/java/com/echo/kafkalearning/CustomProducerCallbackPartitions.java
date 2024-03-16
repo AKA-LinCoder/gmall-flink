@@ -12,13 +12,19 @@ public class CustomProducerCallbackPartitions {
         //序列化配置
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
+        //关联自定义分区器
+        properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG,"com.echo.kafkalearning.MyPartitions");
+
+
 
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(properties);
+
+
 
         //发送信息
         for(int i=0;i<5;i++){
             //要指定分区，一定要检查一下当前主题有几个分区
-            kafkaProducer.send(new ProducerRecord<>("first", 2,"","aldiasd" + i), new Callback() {
+            kafkaProducer.send(new ProducerRecord<>("first", "aldiasd" + i), new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                     if(e == null){
