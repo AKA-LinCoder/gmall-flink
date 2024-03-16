@@ -17,11 +17,14 @@ public class CustomProducerCallbackPartitions {
 
         //发送信息
         for(int i=0;i<5;i++){
+            //要指定分区，一定要检查一下当前主题有几个分区
             kafkaProducer.send(new ProducerRecord<>("first", 2,"","aldiasd" + i), new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                     if(e == null){
                         System.out.println("主题："+recordMetadata.topic()+"分区"+recordMetadata.partition());
+                    }else{
+                        System.out.println(e.getMessage());
                     }
                 }
             });

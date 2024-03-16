@@ -17,7 +17,7 @@ public class CustomProducerCallback {
 
         //发送信息
         for(int i=0;i<5;i++){
-            kafkaProducer.send(new ProducerRecord<>("first", "linguanyu" + i), new Callback() {
+            kafkaProducer.send(new ProducerRecord<>("first", "alibaba" + i), new Callback() {
                 @Override
                 public void onCompletion(RecordMetadata recordMetadata, Exception e) {
                     if(e == null){
