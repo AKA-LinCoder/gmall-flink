@@ -25,7 +25,6 @@ public class CustomProducerTranactions {
         //初始化事务
         kafkaProducer.initTransactions();
         kafkaProducer.beginTransaction();
-
         try {
 
             //发送信息
@@ -35,15 +34,9 @@ public class CustomProducerTranactions {
             kafkaProducer.commitTransaction();
         }catch (Exception e){
             kafkaProducer.abortTransaction();
-
         }finally {
             //关闭资源
             kafkaProducer.close();
         }
-
-
-
-
-
     }
 }
