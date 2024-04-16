@@ -9,6 +9,8 @@
         <option value="$PROJECT_DIR$/gmall-publisher/pom.xml" />
         <option value="$PROJECT_DIR$/gmall-publisher-2024/pom.xml" />
         <option value="$PROJECT_DIR$/Kafka-learning/pom.xml" />
+        <option value="$PROJECT_DIR$/flink-hotitem/pom.xml" />
+        <option value="$PROJECT_DIR$/flink-tutorial-117/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

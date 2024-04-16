@@ -4,11 +4,13 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringSerializer;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Properties;
+import java.util.Set;
 
 public class CustomConsumer {
     public static void main(String[] args) {
@@ -26,6 +28,21 @@ public class CustomConsumer {
         ArrayList<String> topics = new ArrayList<>();
         topics.add("first");
         kafkaConsumer.subscribe(topics);
+
+        //获取分区
+        Set<TopicPartition> assignment = kafkaConsumer.assignment();
+
+        //保证分区分配方案以及指定完毕
+        while (assignment.size() == 0){
+            kafkaConsumer.poll(Duration.ofSeconds(1));
+            assignment = kafkaConsumer.assignment();
+        }
+
+        for (TopicPartition topicPartition : assignment) {
+            System.out.println(topicPartition.partition());
+        }
+
+
         // 消费数据
         while (true){
             ConsumerRecords<String, String> consumerRecords = kafkaConsumer.poll(Duration.ofSeconds(1));

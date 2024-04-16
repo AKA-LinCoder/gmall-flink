@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <option name="USE_RELEASE_OPTION" value="false" />
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -9,11 +11,9 @@
         <module name="gmall-realtime" />
         <module name="Kafka-learning" />
         <module name="gmall-publisher-2024" />
+        <module name="flink-hotitem" />
+        <module name="flink-tutorial-117" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="demo" target="1.8" />
-      <module name="gmall-publisher" target="1.8" />
-    </bytecodeTargetLevel>
   </component>
 </project>
