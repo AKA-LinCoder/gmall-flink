@@ -27,6 +27,7 @@ public class WordCountSteamDemo {
                     collector.collect(tuple2);
                 }
             }
+
         });
         KeyedStream<Tuple2<String, Integer>, String> keyedStream = flatMapDS.keyBy(new KeySelector<Tuple2<String, Integer>, String>() {
             @Override

@@ -7,6 +7,11 @@ import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.util.Collector;
 
+/**
+ * 算子并行度优先级>整体设置并行度优先级>提交时指定>配置参数
+ * 算子之间的传输关系：一对一 ，重分区
+ * 算子串在仪器的条件： 一对一，并行度相同
+ */
 public class WordCountStreamUnboundedDemo {
     public static void main(String[] args) throws Exception {
 

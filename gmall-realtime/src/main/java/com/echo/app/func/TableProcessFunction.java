@@ -156,7 +156,6 @@ public class TableProcessFunction extends BroadcastProcessFunction<JSONObject, S
             collector.collect(jsonObject);
 
         } else{
-
             System.out.println("找不到对应的key"+table);
         }
 
