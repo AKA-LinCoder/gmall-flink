@@ -34,4 +34,5 @@ public class DimSinkFunction extends RichSinkFunction<JSONObject> {
         //归还连接
         connection.close();
     }
+
 }
