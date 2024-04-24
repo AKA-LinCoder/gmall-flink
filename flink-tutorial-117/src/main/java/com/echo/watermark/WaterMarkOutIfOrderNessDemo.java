@@ -1,6 +1,7 @@
 package com.echo.watermark;
 
 import com.echo.bean.WaterSensor;
+import com.echo.process.ProcessKeyedDemo;
 import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.flink.api.common.eventtime.SerializableTimestampAssigner;
 import org.apache.flink.api.common.eventtime.WatermarkStrategy;
@@ -26,17 +27,7 @@ public class WaterMarkOutIfOrderNessDemo {
 
     public static void main(String[] args) throws Exception {
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
-        DataStreamSource<WaterSensor> source = environment.fromElements(new WaterSensor("s1", 1L, 1),
-                new WaterSensor("s2", 2L, 2),
-                new WaterSensor("s2", 2L, 2),
-                new WaterSensor("s2", 1L, 2),
-                new WaterSensor("s2", 2L, 2),
-                new WaterSensor("s2", 22L, 2),
-                new WaterSensor("s2", 22L, 2),
-                new WaterSensor("s2", 12L, 2),
-                new WaterSensor("s2", 2L, 2),
-                new WaterSensor("s2", 2L, 2),
-                new WaterSensor("s1", 3L, 3));
+        DataStreamSource<WaterSensor> source = ProcessKeyedDemo.getData(environment);
         //TODO 设置水位线策略
         WatermarkStrategy<WaterSensor> watermarkStrategy = WatermarkStrategy.
         //设置最大乱序时间
