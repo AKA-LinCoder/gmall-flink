@@ -12,6 +12,7 @@
         <module name="Kafka-learning" />
         <module name="gmall-publisher-2024" />
         <module name="flink-hotitem" />
+        <module name="flinkDCD3_0" />
         <module name="flink-tutorial-117" />
       </profile>
     </annotationProcessing>

@@ -46,7 +46,7 @@ public class DimApp {
         StreamExecutionEnvironment environment = StreamExecutionEnvironment.getExecutionEnvironment();
         environment.setParallelism(1);//生产环境设置为Kafka主题的分区数量
         //1.1开启checkPoint,5分钟一次
-        environment.enableCheckpointing(1000, CheckpointingMode.EXACTLY_ONCE);
+        environment.enableCheckpointing(5000, CheckpointingMode.EXACTLY_ONCE);
         environment.getCheckpointConfig().setCheckpointTimeout(10*60000L);
         environment.getCheckpointConfig().setMaxConcurrentCheckpoints(2);
         environment.setRestartStrategy(RestartStrategies.fixedDelayRestart(3,5000L));
