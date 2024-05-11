@@ -39,7 +39,7 @@ public class keyByDemo {
             @Override
             public WaterSensor reduce(WaterSensor waterSensor, WaterSensor t1) throws Exception {
                 //第一个参数之前的计算结果
-                //第二个参数：现在来的数据
+                //第二个参数：现在来的数据·
                 return null;
             }
         });

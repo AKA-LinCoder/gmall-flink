@@ -9,9 +9,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="gmall-realtime" />
-        <module name="Kafka-learning" />
         <module name="gmall-publisher-2024" />
         <module name="flink-hotitem" />
+        <module name="spark" />
+        <module name="Kafka-learning" />
+        <module name="read-segy" />
         <module name="flinkDCD3_0" />
         <module name="flink-tutorial-117" />
       </profile>

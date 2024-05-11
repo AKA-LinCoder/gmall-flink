@@ -151,7 +151,6 @@ public class BaseLogApp {
                             context.output(actionTag, action.toJSONString());
                         }
                     }
-
                     //因为启动页面不会有曝光和动作数据
                     //移除曝光和动作数据&写到页面日志主流
                     jsonObject.remove("display");
@@ -191,10 +190,11 @@ public class BaseLogApp {
         //bin/kafka-console-consumer.sh --bootstrap-server hadoop102:9092 --topic dwd_traffic_page_log
 
 
+
+
         //{"common":{"ar":"110000","ba":"Xiaomi","ch":"xiaomi","is_new":"1","md":"Xiaomi Mix2 ","mid":"mid_1818969","os":"Android 11.0","uid":"513","vc":"v2.1.134"},
         // "err":{"error_code":2633,"msg":" Exception in thread \\  java.net.SocketTimeoutException\\n \\tat com.atgugu.gmall2020.mock.bean.log.AppError.main(AppError.java:xxxxxx)"},
         // "start":{"entry":"notice","loading_time":12438,"open_ad_id":7,"open_ad_ms":4407,"open_ad_skip_ms":0},"ts":1651217959000}
-
         //TODO 9 启动任务
         environment.execute("BaseLogApp");
     }

@@ -17,6 +17,10 @@ public class CustomProducer {
         properties.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
         properties.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
 
+
+        //TODO 使用自定义分区
+        properties.put(ProducerConfig.PARTITIONER_CLASS_CONFIG,MyPartitions.class.getName());
+
         KafkaProducer<String, String> kafkaProducer = new KafkaProducer<>(properties);
 
         //发送信息
@@ -25,6 +29,5 @@ public class CustomProducer {
         }
         //关闭资源
         kafkaProducer.close();
-
     }
 }

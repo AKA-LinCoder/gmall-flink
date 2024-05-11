@@ -31,7 +31,5 @@ public class CustomConsumerPartition {
                 System.out.println(record);
             }
         }
-
-
     }
 }

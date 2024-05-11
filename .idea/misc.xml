@@ -12,6 +12,8 @@
         <option value="$PROJECT_DIR$/flink-hotitem/pom.xml" />
         <option value="$PROJECT_DIR$/flink-tutorial-117/pom.xml" />
         <option value="$PROJECT_DIR$/flinkDCD3_0/pom.xml" />
+        <option value="$PROJECT_DIR$/spark/pom.xml" />
+        <option value="$PROJECT_DIR$/read-segy/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
